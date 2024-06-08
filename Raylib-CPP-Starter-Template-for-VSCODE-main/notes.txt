@@ -1,8 +1,0 @@
-1. Create Blank Screen and Game Loop
-2. Draw the paddles and the ball
-3. Move the ball around
-4. Check collision with all edges
-5. Move CPU paddle with Artificial Intelligence -->  ***** Inheritance *****
-6. Limit movement of paddle --> **** Use OOP to avoid repeated code ****
-7. Check for collision between ball and paddles --> can use raylib library for collision
-8. Add scoring
