@@ -10,6 +10,9 @@ Color DarkGreen = { 43, 51, 24, 255 };
 
 int cellSize = 30;
 int cellCount = 25;
+int offset = 75;
+int score = 0;
+int highScore = 0;
 
 double lastUpdateTime = 0;
 
@@ -49,7 +52,7 @@ public:
 		{
 			float x = body[i].x;
 			float y = body[i].y;
-			Rectangle segment = Rectangle{ x * cellSize, y * cellSize, (float)cellSize, (float)cellSize };
+			Rectangle segment = Rectangle{ x * cellSize + offset, y * cellSize + offset, (float)cellSize, (float)cellSize };
 			DrawRectangleRounded(segment, 0.5, 6, DarkGreen);
 		}
 	}
@@ -97,7 +100,7 @@ public:
 	void Draw()
 	{
 		//DrawRectangle(position.x * cellSize, position.y * cellSize, cellSize, cellSize, DarkGreen);
-		DrawTexture(texture, position.x * cellSize, position.y * cellSize, WHITE);
+		DrawTexture(texture, position.x * cellSize + offset, position.y * cellSize + offset, WHITE);
 	}
 
 	Vector2 GenerateRandomCell()
@@ -149,6 +152,7 @@ public:
 		{	
 			food.position = food.GenerateRandomPos(snake.body);
 			snake.addSegment = true;
+			score++;
 
 		}
 	}
@@ -170,6 +174,11 @@ public:
 		snake.Reset();
 		food.position = food.GenerateRandomPos(snake.body);
 		running = false;
+		if (score > highScore)
+		{
+			highScore = score;
+		}
+		score = 0;
 	}
 
 	void CheckCollisionWithTail()
@@ -187,7 +196,7 @@ int main()
 {
 
 	cout << "Starting the game..." << endl;
-	InitWindow(cellSize * cellCount, cellSize * cellCount, "Snake Game");
+	InitWindow(2*offset + cellSize*cellCount, 2*offset + cellSize*cellCount, "Snake Game");
 	SetTargetFPS(60);
 
 	Game game = Game();
@@ -198,7 +207,7 @@ int main()
 		BeginDrawing();
 
 		// update
-		if (eventTriggered(0.2))
+		if (eventTriggered(0.1))
 		{
 			game.Update();
 		}
@@ -218,14 +227,18 @@ int main()
 			game.snake.direction = { 1, 0 };
 			game.running = true;
 		}
-		if (IsKeyPressed(KEY_LEFT) && game.snake.direction.x != 1)
+		if (IsKeyPressed(KEY_LEFT) && game.snake.direction.x != 1) 
 		{
 			game.snake.direction = { -1, 0 };
 			game.running = true;
 		}
-
+		 
 		// drawing
 		ClearBackground(Green);
+		DrawRectangleLinesEx(Rectangle{ (float)offset - 5, (float)offset - 5, (float)cellSize * cellCount + 10, (float)cellSize * cellCount + 10 }, 5, DarkGreen);
+		DrawText("Snake Game", offset - 5, 20, 40, DarkGreen);
+		DrawText(TextFormat("%i", score), offset - 5, offset + cellSize * cellCount + 10, 40, DarkGreen);
+		DrawText(TextFormat("High Score: %i", highScore), cellSize*cellCount/2, offset + cellSize * cellCount + 10, 40, DarkGreen);
 		game.Draw();
 
 		EndDrawing();
