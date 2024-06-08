@@ -1,20 +1,47 @@
-// SnakeGame.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
-
 #include <iostream>
+#include <raylib.h>
+
+using namespace std;
+
+Color Green = { 173, 204, 96, 255 };
+Color DarkGreen = { 43, 51, 24, 255 };
+
+int cellSize = 30;
+int cellCount = 25;
+
+class Food
+{
+
+public:
+	Vector2 position = { 5, 6 };
+
+	void Draw()
+	{
+		DrawRectangle(position.x * cellSize, position.y * cellSize, cellSize, cellSize, DarkGreen);
+	}
+};
 
 int main()
 {
-    std::cout << "Hello World!\n";
+
+	cout << "Starting the game..." << endl;
+	InitWindow(cellSize * cellCount, cellSize * cellCount, "Snake Game");
+	SetTargetFPS(60);
+
+	Food food = Food();
+
+	// game loop
+	while (WindowShouldClose() == false)
+	{
+		BeginDrawing();
+
+		// drawing
+		ClearBackground(Green);
+		food.Draw();
+
+		EndDrawing();
+	}
+
+	CloseWindow();
+	return 0;
 }
-
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
-
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
