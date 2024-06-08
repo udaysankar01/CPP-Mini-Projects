@@ -124,6 +124,7 @@ class Game
 public:
 	Snake snake = Snake();
 	Food food = Food(snake.body);
+	bool running = true;
 
 	void Draw()
 	{
@@ -132,10 +133,14 @@ public:
 	}
 
 	void Update()
-	{
-		snake.Update();
-		CheckCollisionWithFood();
-		CheckCollisionWithEdges();
+	{	
+		if (running)
+		{
+			snake.Update();
+			CheckCollisionWithFood();
+			CheckCollisionWithEdges();
+			CheckCollisionWithTail();
+		}
 	}
 
 	void CheckCollisionWithFood()
@@ -164,6 +169,17 @@ public:
 	{
 		snake.Reset();
 		food.position = food.GenerateRandomPos(snake.body);
+		running = false;
+	}
+
+	void CheckCollisionWithTail()
+	{
+		deque<Vector2> headlessBody = snake.body;
+		headlessBody.pop_front();
+		if (elementInDeque(snake.body[0], headlessBody))
+		{
+			GameOver();
+		}
 	}
 };
 
@@ -190,18 +206,22 @@ int main()
 		if (IsKeyPressed(KEY_UP) && game.snake.direction.y != 1)
 		{
 			game.snake.direction = { 0, -1 };
+			game.running = true;
 		}
 		if (IsKeyPressed(KEY_DOWN) && game.snake.direction.y != -1)
 		{
 			game.snake.direction = { 0, 1 };
+			game.running = true;
 		}
 		if (IsKeyPressed(KEY_RIGHT) && game.snake.direction.x != -1)
 		{
 			game.snake.direction = { 1, 0 };
+			game.running = true;
 		}
 		if (IsKeyPressed(KEY_LEFT) && game.snake.direction.x != 1)
 		{
 			game.snake.direction = { -1, 0 };
+			game.running = true;
 		}
 
 		// drawing
