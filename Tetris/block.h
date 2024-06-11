@@ -9,6 +9,8 @@ class Block
 public:
 	Block();
 	void Draw();
+	void Rotate();
+	void UndoRotation();
 	void Move(int rows, int columns);
 	std::vector<Position> GetCellPositions();
 	int id;

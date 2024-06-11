@@ -47,6 +47,9 @@ void Game::HandleInput()
 	case KEY_DOWN:
 		MoveBlockDown();
 		break;
+	case KEY_UP:
+		RotateBlock();
+		break;
 	}
 
 }
@@ -54,14 +57,63 @@ void Game::HandleInput()
 void Game::MoveBlockLeft()
 {
 	currentBlock.Move(0, -1);
+	if (IsBlockOutside())
+	{	
+		currentBlock.Move(0, 1);
+	}
 }
 
 void Game::MoveBlockRight()
 {
 	currentBlock.Move(0, 1);
+	if (IsBlockOutside())
+	{	
+		currentBlock.Move(0, -1);
+	}
 }
 
 void Game::MoveBlockDown()
 {
 	currentBlock.Move(1, 0);
+	if (IsBlockOutside())
+	{	
+		currentBlock.Move(-1, 0);
+
+		// lock the block when it reaches bottom
+		LockBlock();
+	}
 }
+
+bool Game::IsBlockOutside()
+{
+	std::vector<Position> tiles = currentBlock.GetCellPositions();
+	for (Position item : tiles)
+	{	
+		if (grid.IsCellOutside(item.row, item.column))
+		{	
+			return true;
+		}
+	}
+	return false;
+}
+
+void Game::RotateBlock()
+{
+	currentBlock.Rotate();
+	if (IsBlockOutside())
+	{
+		currentBlock.UndoRotation();
+	}
+}
+
+void Game::LockBlock()
+{
+	std::vector<Position> tiles = currentBlock.GetCellPositions();
+	for (Position item : tiles)
+	{
+		grid.grid[item.row][item.column] = currentBlock.id;
+	}
+	currentBlock = nextBlock;
+	nextBlock = GetRandomBlock();
+}
+
