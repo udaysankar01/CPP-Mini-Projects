@@ -15,8 +15,8 @@ int width = 160, height = 44;
 float zBuffer[160 * 44];
 char buffer[160 * 44];
 int backgroundASCIICode = ' ';
-float incrementSpeed = 0.6;
-float distFromCam = 150;
+float incrementSpeed = 0.8;
+float distFromCam = 100;
 float K1 = 50;
 
 float calculateX(int i, int j, int k)
@@ -61,7 +61,12 @@ int main()
         memset(zBuffer, 0, width * height * 4);
         for (float cubeX = -cubeWidth; cubeX < cubeWidth; cubeX += incrementSpeed) {
             for (float cubeY = -cubeWidth; cubeY < cubeWidth; cubeY += incrementSpeed) {
-                calculateForSurface(cubeX, cubeY, -cubeWidth, '#');
+                calculateForSurface(cubeX, cubeY, -cubeWidth, '.');
+                calculateForSurface(cubeWidth, cubeY, cubeX, '$');
+                calculateForSurface(-cubeWidth, cubeY, -cubeX, '~');
+                calculateForSurface(-cubeX, cubeY, cubeWidth, '#');
+                calculateForSurface(cubeX, -cubeWidth, -cubeY, ';');
+                calculateForSurface(cubeX, cubeWidth, cubeY, '-');
             }
         }
         std::cout << "\x1b[H";
