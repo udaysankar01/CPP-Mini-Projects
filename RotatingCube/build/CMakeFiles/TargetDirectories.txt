@@ -1,3 +1,0 @@
-/home/uday/projects/CPP-Mini-Projects/RotatingCube/build/CMakeFiles/RotatingCube.dir
-/home/uday/projects/CPP-Mini-Projects/RotatingCube/build/CMakeFiles/edit_cache.dir
-/home/uday/projects/CPP-Mini-Projects/RotatingCube/build/CMakeFiles/rebuild_cache.dir
